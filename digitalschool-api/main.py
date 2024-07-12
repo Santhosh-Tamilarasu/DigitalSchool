@@ -11,6 +11,7 @@
 #         }
 
 from flask import Flask, jsonify,request
+import getlist
 app = Flask(__name__)
 
 @app.before_request
@@ -34,11 +35,22 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    if username == 'santhosh' and password == '@0001':
-        return jsonify({
-       'username':username,
-       'password':password,
-       'message': 'Login successful'
-       }), 200
+    if username=='' or password=='':
+      return jsonify({
+          'error':True,
+          'errorMessage':'Empty field username or password',
+      }),200
     else:
-        return jsonify({'message': 'Invalid username or password'}), 401
+      if username == 'santhosh' and password == '@0001':
+        return jsonify({
+        'error':False,
+        'response':{
+            'username':username,
+            'responseMessage': 'Login successfully'
+        }
+       }), 200
+      else:
+        return jsonify({
+          'error':True,
+          'errorMessage':'Invalid username or password',
+          }), 401
